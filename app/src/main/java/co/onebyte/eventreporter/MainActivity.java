@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,17 +16,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("Life cycle test", "We are at onCreate()");
-        TextView view = findViewById(R.id.text);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-                MainActivity.this.startActivity(intent);
-                //MainActivity.this.finish();
 
-            }
-        });
+        // Get ListView object from xml.
+        ListView eventListView = (ListView) findViewById(R.id.event_list);
+
+        // Initialize an adapter.
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.event_item,
+                R.id.event_name,
+                getEventNames());
+
+        // Assign adapter to ListView.
+        eventListView.setAdapter(adapter);
+    }
+
+    /**
+     * A dummy function to get fake event names.
+     *
+     * @return an array of fake event names.
+     */
+    private String[] getEventNames() {
+        String[] names = {
+                "Event1", "Event2", "Event3",
+                "Event4", "Event5", "Event6",
+                "Event7", "Event8", "Event9",
+                "Event10", "Event11", "Event12"};
+        return names;
+
 
     }
 
