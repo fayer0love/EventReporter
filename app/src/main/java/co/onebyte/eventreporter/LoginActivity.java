@@ -23,9 +23,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//
+//        myRef.setValue("Hello, World!");
+        // Firebase uses singleton to initialize the sdk
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        myRef.setValue("Hello, World!");
+        mUsernameEditText = (EditText) findViewById(R.id.editTextLogin);
+        mPasswordEditText = (EditText) findViewById(R.id.editTextPassword);
+        mSubmitButton = (Button) findViewById(R.id.submit);
+        mRegisterButton = (Button) findViewById(R.id.register);
     }
 }
