@@ -20,32 +20,33 @@ public class MainActivity extends AppCompatActivity {
         // Get ListView object from xml.
         ListView eventListView = (ListView) findViewById(R.id.event_list);
 
-        // Initialize an adapter.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                R.layout.event_item,
-                R.id.event_name,
-                getEventNames());
+//        // Initialize an adapter.
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                this,
+//                R.layout.event_item,
+//                R.id.event_name,
+//                getEventNames());
+
+        EventAdapter adapter = new EventAdapter(this);
 
         // Assign adapter to ListView.
         eventListView.setAdapter(adapter);
     }
 
-    /**
-     * A dummy function to get fake event names.
-     *
-     * @return an array of fake event names.
-     */
-    private String[] getEventNames() {
-        String[] names = {
-                "Event1", "Event2", "Event3",
-                "Event4", "Event5", "Event6",
-                "Event7", "Event8", "Event9",
-                "Event10", "Event11", "Event12"};
-        return names;
-
-
-    }
+//    /**
+//     * A dummy function to get fake event names.
+//     *
+//     * @return an array of fake event names.
+//     */
+//    private String[] getEventNames() {
+//        String[] names = {
+//                "Event1", "Event2", "Event3",
+//                "Event4", "Event5", "Event6",
+//                "Event7", "Event8", "Event9",
+//                "Event10", "Event11", "Event12"};
+//        return names;
+//
+//    }
 
     @Override
     protected void onStart() {
