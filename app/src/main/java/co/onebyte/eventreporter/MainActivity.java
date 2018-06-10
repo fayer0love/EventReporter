@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private EventFragment mListFragment;
+    private CommentFragment mGridFragment;
 
 
     @Override
@@ -35,11 +37,19 @@ public class MainActivity extends AppCompatActivity {
 //        eventListView.setAdapter(adapter);
 
         // Show different fragments based on screen size.
-        if (findViewById(R.id.fragment_container) != null) {
-            Fragment fragment = isTablet() ? new  CommentFragment() : new EventFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
+//        if (findViewById(R.id.fragment_container) != null) {
+//            Fragment fragment = isTablet() ? new  CommentFragment() : new EventFragment();
+//            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+//        }
+        //add list view
+                mListFragment = new EventFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.event_container,     mListFragment).commit();
 
+        //add Gridview
+        if (isTablet()) {
+            mGridFragment = new CommentFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.comment_container, mGridFragment).commit();
+        }
     }
 
     private boolean isTablet() {
