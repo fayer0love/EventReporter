@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Get ListView object from xml.
-        ListView eventListView = (ListView) findViewById(R.id.event_list);
+//        ListView eventListView = (ListView) findViewById(R.id.event_list);
 
 //        // Initialize an adapter.
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
 //                R.id.event_name,
 //                getEventNames());
 
-        EventAdapter adapter = new EventAdapter(this);
+//        EventAdapter adapter = new EventAdapter(this);
 
         // Assign adapter to ListView.
-        eventListView.setAdapter(adapter);
+//        eventListView.setAdapter(adapter);
     }
 
 //    /**
