@@ -7,11 +7,11 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <fragment android:name="co.onebyte.eventreporter.EventFragment"
-        android:id="@+id/event_fragment"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </fragment>
+    <!--<fragment android:name="co.onebyte.eventreporter.EventFragment"-->
+        <!--android:id="@+id/event_fragment"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent">-->
+    <!--</fragment>-->
 </LinearLayout>
 
 
