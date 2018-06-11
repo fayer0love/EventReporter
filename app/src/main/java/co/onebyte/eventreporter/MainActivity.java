@@ -3,6 +3,7 @@ package co.onebyte.eventreporter;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,8 +104,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //importantgit
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+
+        if(isChangingConfigurations()&& fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+        }
         Log.e("Life cycle test", "We are at onPause()");
     }
+
 
     @Override
     protected void onStop() {
