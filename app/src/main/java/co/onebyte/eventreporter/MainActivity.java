@@ -42,26 +42,36 @@ public class MainActivity extends AppCompatActivity {
 //            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
 //        }
         //add list view
-                mListFragment = new EventFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.event_container,     mListFragment).commit();
+        if (getSupportFragmentManager().findFragmentById(R.id.comment_container) == null) {
+            mListFragment = new EventFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.event_container, mListFragment).commit();
+        }
+
 
         //add Gridview
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.comment_container);
         if (isTablet()) {
-            mGridFragment = new CommentFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.comment_container, mGridFragment).commit();
+            if (fragment == null) {
+                mGridFragment = new CommentFragment();
+                getSupportFragmentManager().beginTransaction().add(R.id.comment_container, mGridFragment).commit();
+            }
+        } else {
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
         }
     }
 
-    private boolean isTablet() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
-//    //xml boolean value depends on screen size
-//    //new function of isTablet
 //    private boolean isTablet() {
-//        return getResources().getBoolean(R.bool.is_tablet);
+//        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+//                Configuration.SCREENLAYOUT_SIZE_MASK) >=
+//                Configuration.SCREENLAYOUT_SIZE_LARGE;
 //    }
+    //xml boolean value depends on screen size
+    //new function of isTablet
+    private boolean isTablet() {
+        return getResources().getBoolean(R.bool.is_tablet);
+    }
 
 //    /**
 //     * A dummy function to get fake event names.
