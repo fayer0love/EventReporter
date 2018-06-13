@@ -69,7 +69,7 @@ public class EventReportActivity extends AppCompatActivity {
 
         //        new this needs to set as static
         new AsyncTask<Void, Void, Void>() {
-            private List<String> mAddressList = new ArrayList<String>();
+            private List<String> mAddressList = new ArrayList<>();
 
             @Override
             protected Void doInBackground(Void... urls) {
@@ -80,8 +80,8 @@ public class EventReportActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void input) {
                 if (mAddressList.size() >= 3) {
-                    mEditTextLocation.setText(mAddressList.get(0) + ", " + mAddressList.get(1) +
-                            ", " + mAddressList.get(2) + ", " + mAddressList.get(3));
+                    mEditTextLocation.setText(String.format("%s, %s, %s, %s", mAddressList.get(0),
+                            mAddressList.get(1), mAddressList.get(2),mAddressList.get(3)));
                 }
             }
         }.execute();
