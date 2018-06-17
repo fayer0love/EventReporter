@@ -12,8 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84af7c67-eaee-4964-ac89-ccda32758c42" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventListAdapter.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,19 +36,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-manifest">
-            <state />
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="LocationTracker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/LocationTracker.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -112,16 +99,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EventListAdapter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EventListAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventListAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="80" column="4" lean-forward="false" selection-start-line="80" selection-start-column="4" selection-end-line="80" selection-end-column="4" />
+            <state relative-caret-position="664">
+              <caret line="87" column="5" lean-forward="false" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#551#552#0" expanded="true" />
                 <element signature="e#585#586#0" expanded="true" />
+                <element signature="e#2990#2991#0" expanded="true" />
+                <element signature="e#3029#3030#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventsFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="954">
+              <caret line="75" column="27" lean-forward="false" selection-start-line="75" selection-start-column="27" selection-end-line="75" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -2277,7 +2276,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_event.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/Event.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/BlankFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_event.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_comment.xml" />
@@ -2296,6 +2294,7 @@
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/event_list_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventListAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java" />
       </list>
     </option>
   </component>
@@ -2713,7 +2712,7 @@
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897604" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3285968" sideWeight="0.4969743" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3278328" sideWeight="0.49498746" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5027503" sideWeight="0.47243106" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5027503" sideWeight="0.47243106" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3278328" sideWeight="0.7794486" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2866,14 +2865,6 @@
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3217,13 +3208,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="80" column="4" lean-forward="false" selection-start-line="80" selection-start-column="4" selection-end-line="80" selection-end-column="4" />
+        <state relative-caret-position="664">
+          <caret line="87" column="5" lean-forward="false" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#551#552#0" expanded="true" />
             <element signature="e#585#586#0" expanded="true" />
+            <element signature="e#2990#2991#0" expanded="true" />
+            <element signature="e#3029#3030#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/co/onebyte/eventreporter/EventsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="954">
+          <caret line="75" column="27" lean-forward="false" selection-start-line="75" selection-start-column="27" selection-end-line="75" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
