@@ -12,10 +12,19 @@
         android:orientation="vertical">
 
         <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="#FF3F89E7"
             >
+
+            <!-- This recycler view shows Event data to customers-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/event_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
