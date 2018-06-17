@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ public class EventReportActivity extends AppCompatActivity {
     private ImageView mImageViewCamera;
     private DatabaseReference database;
     private LocationTracker mLocationTracker;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     //Set variables ready for picking images
     private static int RESULT_LOAD_IMAGE = 1;
