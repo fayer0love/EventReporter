@@ -13,6 +13,8 @@ public class Event {
     private long time;
     private String username;
     private String imgUri;
+    private int CommentNumber;
+
 
     /**
      * Constructor
@@ -82,5 +84,13 @@ public class Event {
 
     public void setImgUri(String imgUri) {
         this.imgUri = imgUri;
+    }
+
+    public int getCommentNumber() {
+        return CommentNumber;
+    }
+
+    public void setCommentNumber(int commentNumber) {
+        CommentNumber = commentNumber;
     }
 }
