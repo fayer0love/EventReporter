@@ -282,7 +282,7 @@ public class EventReportActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 @SuppressWarnings("VisibleForTests")
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
                 Log.i(TAG, "upload successfully" + eventId);
                 database.child("events").child(eventId).child("imgUri").
                         setValue(downloadUrl.toString());
