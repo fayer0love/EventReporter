@@ -1,6 +1,8 @@
 package co.onebyte.eventreporter;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import java.util.List;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
     private List<Event> eventList;
     private DatabaseReference databaseReference;
+    private Context context;
 
     /**
      * Constructor for EventListAdapter
@@ -30,6 +33,17 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         eventList = events;
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
+
+    /**
+     * Constructor for EventListAdapter
+     * @param events events that are showing on screen
+     */
+    public EventListAdapter(List<Event> events, Context context) {
+        this.context = context;
+        eventList = events;
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+    }
+
 
     /**
      * Use ViewHolder to hold view widget, view holder is required to be used in recycler view
@@ -126,6 +140,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             }
         });
 
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                String eventId = event.getId();
+                intent.putExtra("EventID", eventId);
+                context.startActivity(intent);
+            }
+        });
     }
 
 

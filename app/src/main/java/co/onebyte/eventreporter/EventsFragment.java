@@ -81,7 +81,7 @@ public class EventsFragment extends Fragment {
                     Event event = noteDataSnapshot.getValue(Event.class);
                     events.add(event);
                 }
-                mAdapter = new EventListAdapter(events);
+                mAdapter = new EventListAdapter(events, getActivity());
                 recyclerView.setAdapter(mAdapter);
             }
 
