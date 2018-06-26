@@ -9,21 +9,45 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
     private List<Event> eventList;
     private DatabaseReference databaseReference;
     private Context context;
+
+    //TYPE_ITEM and TYPE_ADS are identification of item type
+    //TYPE_ITEM = event
+    //TYPE_ADS = ads
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_ADS = 1;
+
+    private AdLoader.Builder builder;
+    private LayoutInflater inflater;
+
+
+    //Keep position of the ads in the list\
+    private Map<Integer, Object> map =
+            new HashMap<>();
+
+    private static final String ADMOB_AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110";
+    private static final String ADMOB_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+
+
 
     /**
      * Constructor for EventListAdapter
@@ -35,13 +59,38 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     /**
-     * Constructor for EventListAdapter
-     * @param events events that are showing on screen
+     * Constructor, create a new list that references right item in right location
+     * @param events events need to show
+     * @param context context
      */
-    public EventListAdapter(List<Event> events, Context context) {
+
+    public EventListAdapter(List<Event> events, final Context context) {
         this.context = context;
         eventList = events;
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        inflater = (LayoutInflater) context.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
+
+        //TODO : the idea is to create a new EventList that holds both ads and original events, if
+        //corresponding position is ads, add to the map and put empty event in corresponding
+        //location, for example, if we have 4 events passed in, we want to do create following list
+        //and export ads location
+        //  <List Position> :0              1           2              3             4         5
+        //                            Event1     Ads1    Events2   Events3  Ads2   Event4
+
+        eventList = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < events.size(); i++) {
+            if (i % 2 == 1) {
+                map.put(i + count, new Object());
+                count++;
+                eventList.add(new Event());
+            }
+            eventList.add(events.get(i));
+        }
+
+
     }
 
 
@@ -78,6 +127,24 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
         }
     }
+
+    /**
+     * View Holder Class for advertisement
+     */
+    public class ViewHolderAds extends RecyclerView.ViewHolder {
+        public FrameLayout frameLayout;
+        ViewHolderAds(View v) {
+            super(v);
+            frameLayout = (FrameLayout)v;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return map.containsKey(position) ? TYPE_ADS : TYPE_ITEM;
+    }
+
+
 
     /**
      * OnBindViewHolder will render created view holder on screen
@@ -168,6 +235,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
+
+
+
+
 
 
     /**
