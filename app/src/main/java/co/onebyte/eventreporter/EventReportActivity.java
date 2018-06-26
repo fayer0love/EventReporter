@@ -277,15 +277,32 @@ public class EventReportActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                Log.i(TAG, "upload unsuccessfully" + eventId);
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                @SuppressWarnings("VisibleForTests")
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.i(TAG, "upload successfully" + eventId + "\n" + uri.toString());
+                        database.child("events").child(eventId).child("imgUri").
+                        setValue(uri.toString());
+                    }
+                });
+
+//                @SuppressWarnings("VisibleForTests") final Task<Uri> taskDownloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+
+                // Take care that StorageReference.getDownloadUrl() returns Task,
+                // which must be handled asynchronously,
+                // you cannot do Uri downloadUrl = photoRef.getDownloadUrl().getResult();
+                // else you will get java.lang.IllegalStateException: Task is not yet complete
+
+
+
                 Log.i(TAG, "upload successfully" + eventId);
-                database.child("events").child(eventId).child("imgUri").
-                        setValue(downloadUrl.toString());
+//                database.child("events").child(eventId).child("imgUri").
+//                        setValue(downloadUrl.toString());
             }
         });
     }
