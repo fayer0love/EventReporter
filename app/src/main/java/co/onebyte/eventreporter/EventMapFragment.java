@@ -1,6 +1,7 @@
 package co.onebyte.eventreporter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,12 +32,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventMapFragment extends Fragment implements OnMapReadyCallback {
+public class EventMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private MapView mMapView;
     private View mView;
     private DatabaseReference database;
     private List<Event> events;
+
+    private GoogleMap mGoogleMap;
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -115,6 +119,8 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
 //        googleMap.animateCamera(CameraUpdateFactory
 //                .newCameraPosition(cameraPosition));
         MapsInitializer.initialize(getContext());
+        mGoogleMap = googleMap;
+        mGoogleMap.setOnInfoWindowClickListener(this);
 
         final LocationTracker locationTracker = new LocationTracker(getActivity());
         locationTracker.getLocation();
@@ -160,7 +166,9 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
                             .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
                     // adding marker
-                    googleMap.addMarker(marker);
+                    Marker mker = googleMap.addMarker(marker);
+                    mker.setTag(event);
+
                 }
 
             }
@@ -170,6 +178,15 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
                 //TODO: do something
             }
         });
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Event event = (Event)marker.getTag();
+        Intent intent = new Intent(getContext(), CommentActivity.class);
+        String eventId = event.getId();
+        intent.putExtra("EventID", eventId);
+        getContext().startActivity(intent);
     }
 
 
