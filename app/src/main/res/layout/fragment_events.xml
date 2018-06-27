@@ -25,6 +25,7 @@
                 android:paddingLeft="20dp"
                 android:textSize="20sp"
                 android:textColor="#FFFFFF"
+                android:id="@+id/Events"
                 android:text="Events"
                 >
             </TextView>
