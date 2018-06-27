@@ -7,6 +7,9 @@ public class Event {
     private String title;
     private String address;
     private String description;
+    private double latitude;
+    private double longitude;
+
 
     private int like;
     private String id;
@@ -93,4 +96,21 @@ public class Event {
     public void setCommentNumber(int commentNumber) {
         CommentNumber = commentNumber;
     }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
 }

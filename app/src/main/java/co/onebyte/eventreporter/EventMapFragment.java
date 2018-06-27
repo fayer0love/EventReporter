@@ -17,6 +17,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,6 +34,8 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mMapView;
     private View mView;
+    private DatabaseReference database;
+    private List<Event> events;
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -38,6 +48,9 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_event_map, container,
                 false);
+        database = FirebaseDatabase.getInstance().getReference();
+        events = new ArrayList<Event>();
+
         return mView;
 
     }
@@ -79,30 +92,86 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+//        MapsInitializer.initialize(getContext());
+//        double latitude = 17.385044;
+//        double longitude = 78.486671;
+//
+//        // Create marker on google map
+//        MarkerOptions marker = new MarkerOptions().position(
+//                new LatLng(latitude, longitude)).title("This is your focus");
+//
+//        // Change marker Icon on google map
+//        marker.icon(BitmapDescriptorFactory
+//                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+//
+//        // Add marker to google map
+//        googleMap.addMarker(marker);
+//
+//        // Set up camera configuration, set camera to latitude = 17.385044, longitude = 78.486671, and set Zoom to 12
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(new LatLng(latitude, longitude)).zoom(12).build();
+//
+//        // Animate the zoom process
+//        googleMap.animateCamera(CameraUpdateFactory
+//                .newCameraPosition(cameraPosition));
         MapsInitializer.initialize(getContext());
-        double latitude = 17.385044;
-        double longitude = 78.486671;
 
-        // Create marker on google map
-        MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("This is your focus");
+        final LocationTracker locationTracker = new LocationTracker(getActivity());
+        locationTracker.getLocation();
 
-        // Change marker Icon on google map
-        marker.icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+        double curLatitude = locationTracker.getLatitude();
+        double curLongitude = locationTracker.getLongitude();
 
-        // Add marker to google map
-        googleMap.addMarker(marker);
-
-        // Set up camera configuration, set camera to latitude = 17.385044, longitude = 78.486671, and set Zoom to 12
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(latitude, longitude)).zoom(12).build();
-
-        // Animate the zoom process
+                .target(new LatLng(curLatitude, curLongitude)).zoom(12).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-
+        setUpMarkersCloseToCurLocation(googleMap, curLatitude, curLongitude);
     }
+
+    private void setUpMarkersCloseToCurLocation(final GoogleMap googleMap,
+                                                final double curLatitude,
+                                                final double curLongitude) {
+        events.clear();
+        database.child("events").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get all available events
+                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
+                    Event event = noteDataSnapshot.getValue(Event.class);
+                    double destLatitude = event.getLatitude();
+                    double destLongitude = event.getLongitude();
+                    int distance = Utils.distanceBetweenTwoLocations(curLatitude, curLongitude,
+                            destLatitude, destLongitude);
+                    if (distance <= 10) {
+                        events.add(event);
+                    }
+                }
+
+                // Set up every events
+                for (Event event : events) {
+                    // create marker
+                    MarkerOptions marker = new MarkerOptions().position(
+                            new LatLng(event.getLatitude(), event.getLongitude())).
+                            title(event.getTitle());
+
+                    // Changing marker icon
+                    marker.icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+
+                    // adding marker
+                    googleMap.addMarker(marker);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //TODO: do something
+            }
+        });
+    }
+
 
 
 }
