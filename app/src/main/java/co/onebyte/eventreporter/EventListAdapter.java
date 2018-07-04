@@ -1,6 +1,5 @@
 package co.onebyte.eventreporter;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.formats.NativeAd;
+import com.google.android.gms.ads.formats.NativeContentAd;
+import com.google.android.gms.ads.formats.NativeContentAdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,10 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
+/**
+ * Created by huang on 6/17/18.
+ */
+
+public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> eventList;
-    private DatabaseReference databaseReference;
-    private Context context;
 
     //TYPE_ITEM and TYPE_ADS are identification of item type
     //TYPE_ITEM = event
@@ -38,37 +44,25 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     private AdLoader.Builder builder;
     private LayoutInflater inflater;
-
-
-    //Keep position of the ads in the list\
-    private Map<Integer, Object> map =
-            new HashMap<>();
+    private DatabaseReference databaseReference;
 
     private static final String ADMOB_AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110";
     private static final String ADMOB_APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
+    //Keep position of the ads in the list\
+    private Map<Integer, Object> map =
+            new HashMap<Integer, Object>();
 
+    private Context context;
 
     /**
      * Constructor for EventListAdapter
      * @param events events that are showing on screen
      */
-    public EventListAdapter(List<Event> events) {
-        eventList = events;
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-    }
-
-    /**
-     * Constructor, create a new list that references right item in right location
-     * @param events events need to show
-     * @param context context
-     */
-
-    public EventListAdapter(List<Event> events, final Context context) {
+    public EventListAdapter(List<Event> events, Context context) {
         this.context = context;
         eventList = events;
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
         inflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
@@ -77,9 +71,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         //location, for example, if we have 4 events passed in, we want to do create following list
         //and export ads location
         //  <List Position> :0              1           2              3             4         5
-        //                            Event1     Ads1    Events2   Events3  Ads2   Event4
+        //                   Event1     Ads1    Events2   Events3  Ads2   Event4
 
-        eventList = new ArrayList<>();
+        //CODEBLOCK
+        eventList = new ArrayList<Event>();
         int count = 0;
         for (int i = 0; i < events.size(); i++) {
             if (i % 2 == 1) {
@@ -89,10 +84,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             }
             eventList.add(events.get(i));
         }
-
-
     }
-
 
     /**
      * Use ViewHolder to hold view widget, view holder is required to be used in recycler view
@@ -105,12 +97,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         public TextView description;
         public TextView time;
         public ImageView imgview;
-        public View layout;
         public ImageView img_view_good;
         public ImageView img_view_comment;
 
         public TextView good_number;
         public TextView comment_number;
+
+        public View layout;
 
         public ViewHolder(View v) {
             super(v);
@@ -139,20 +132,37 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return map.containsKey(position) ? TYPE_ADS : TYPE_ITEM;
-    }
-
-
 
     /**
      * OnBindViewHolder will render created view holder on screen
      * @param holder View Holder created for each position
      * @param position position needs to show
      */
+    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        switch (holder.getItemViewType()) {
+            //TODO : according to different view type, show corresponding view
+            //CODEBLOCK
+            case TYPE_ADS:
+                ViewHolderAds viewHolderAds = (ViewHolderAds) holder;
+                refreshAd(viewHolderAds.frameLayout);
+                break;
+            case TYPE_ITEM:
+                ViewHolder viewHolder = (ViewHolder)holder;
+                configureItemView(viewHolder, position);
+                break;
+        }
+    }
+
+
+
+    /**
+     * Show Event
+     * @param holder event view holder
+     * @param position position of the event
+     */
+    private void configureItemView(final ViewHolder holder, final int position) {
         final Event event = eventList.get(position);
         holder.title.setText(event.getTitle());
         String[] locations = event.getAddress().split(",");
@@ -160,12 +170,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.description.setText(event.getDescription());
         holder.time.setText(Utils.timeTransformer(event.getTime()));
         holder.good_number.setText(String.valueOf(event.getLike()));
+        holder.comment_number.setText(String.valueOf(event.getCommentNumber()));
 
+        //holder.comment_number.setText();
         if (event.getImgUri() != null) {
             final String url = event.getImgUri();
             holder.imgview.setVisibility(View.VISIBLE);
             new AsyncTask<Void, Void, Bitmap>(){
-
                 @Override
                 protected Bitmap doInBackground(Void... params) {
                     return Utils.getBitmapFromURL(url);
@@ -216,6 +227,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 context.startActivity(intent);
             }
         });
+
     }
 
 
@@ -227,19 +239,24 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
      * @return ViewHolder created
      */
     @Override
-    public EventListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                          int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(
-                parent.getContext());
-        View v = inflater.inflate(R.layout.event_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View v;
+        switch (viewType) {
+            case TYPE_ITEM:
+                v = inflater.inflate(R.layout.event_list_item, parent, false);
+                viewHolder = new ViewHolder(v);
+                break;
+            case TYPE_ADS:
+                v = inflater.inflate(R.layout.ads_container_layout,
+                        parent, false);
+                viewHolder = new ViewHolderAds(v);
+                break;
+        }
+        return viewHolder;
     }
-
-
-
-
-
 
     /**
      * Return the size of your dataset (invoked by the layout manager)
@@ -248,7 +265,62 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public int getItemCount() {
         return eventList.size();
     }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return map.containsKey(position) ? TYPE_ADS : TYPE_ITEM;
+    }
+
+    /**
+     * refresh ads, there are several steps falling through
+     * First, load advertisement from remote
+     * Second, add content to ads view
+     * @param frameLayout
+     */
+    private void refreshAd(final FrameLayout frameLayout) {
+        AdLoader.Builder builder = new AdLoader.Builder(context, ADMOB_AD_UNIT_ID);
+        builder.forContentAd(new NativeContentAd.OnContentAdLoadedListener() {
+            @Override
+            public void onContentAdLoaded(NativeContentAd ad) {
+                NativeContentAdView adView = (NativeContentAdView) inflater
+                        .inflate(R.layout.ads_contain, null);
+                populateContentAdView(ad, adView);
+                frameLayout.removeAllViews();
+                frameLayout.addView(adView);
+            }
+        });
+
+        AdLoader adLoader = builder.withAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+            }
+        }).build();
+
+        adLoader.loadAd(new AdRequest.Builder().build());
+    }
+
+
+    private void populateContentAdView(NativeContentAd nativeContentAd,
+                                       NativeContentAdView adView) {
+        adView.setHeadlineView(adView.findViewById(R.id.ads_headline));
+        adView.setImageView(adView.findViewById(R.id.ads_image));
+        adView.setBodyView(adView.findViewById(R.id.ads_body));
+        adView.setAdvertiserView(adView.findViewById(R.id.ads_advertiser));
+
+        // Some assets are guaranteed to be in every NativeContentAd.
+        ((TextView) adView.getHeadlineView()).setText(nativeContentAd.getHeadline());
+        ((TextView) adView.getBodyView()).setText(nativeContentAd.getBody());
+        ((TextView) adView.getAdvertiserView()).setText(nativeContentAd.getAdvertiser());
+
+        List<NativeAd.Image> images = nativeContentAd.getImages();
+
+        if (images.size() > 0) {
+            ((ImageView) adView.getImageView()).setImageDrawable(images.get(0).getDrawable());
+        }
+
+        // Assign native ad object to the native view.
+        adView.setNativeAd(nativeContentAd);
+    }
+
 }
-
-
-
