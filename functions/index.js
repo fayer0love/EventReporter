@@ -17,10 +17,12 @@ exports.sendNotification = functions.database.ref('/events/{pushId}')
                   title : eventSnapshot.title,
                   description : eventSnapshot.description,
                   address : eventSnapshot.address,
-                  imgUri : eventSnapshot.imgUri
               }
            };
 
+           if ((typeof eventSnapshot.imgUri) === "string" ) {
+                         payload.data[imgUri] = eventSnapshot.imgUri ;
+                     }
 
        // Send a message to devices subscribed to the provided topic.
        return admin.messaging().sendToTopic(topic, payload)
